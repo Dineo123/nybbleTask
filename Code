@@ -1,0 +1,160 @@
+Question 1
+
+class Solution {
+public:
+    vector<int> runningSum(vector<int>& nums) {
+        int sum = 0;
+        for(int &x:nums)
+        {
+            x += sum;
+            sum = x;
+        }
+        return nums;
+    }
+};
+
+Question 2
+
+var shuffle = function(nums, n) {
+    let resArr = [];
+    for (let i = 0; i < nums.length/2; i++) {
+        resArr.push(nums[i]);
+        resArr.push(nums[i + n]);
+    }
+    return resArr;
+};
+
+Question 3
+
+class Solution {
+    public int numJewelsInStones(String J, String S) {
+        int ans  = 0;
+        for(int i = 0; i < S.length(); i++){
+            for(int j = 0; j < J.length(); j++){
+                if(J.charAt(j) == S.charAt(i)){
+                    ans ++;
+                    break;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Question 4
+
+#include <bits/stdc++.h>
+using namespace std;
+class Solution {
+public:
+   int numberOfSubstrings(string s) {
+      int ret = 0;
+      map <char, int> m;
+      int j = 0;
+      for(int i = 0; i < s.size(); i++){
+         m[s[i]]++;
+         while(m['a'] > 0 && m['b'] > 0 && m['c'] > 0){
+            m[s[j]]--;
+            j++;
+         }
+         ret += j;
+      }
+      return ret;
+   }
+};
+main(){
+   Solution ob;
+   cout << (ob.numberOfSubstrings("abcabc"));
+}
+
+Question 5
+
+// CPP program to find length of longest 
+// subsegment of all 1's by changing at 
+// most k 0's 
+#include <iostream> 
+using namespace std; 
+  
+int longestSubSeg(int a[], int n, int k) 
+{ 
+    int cnt0 = 0; 
+    int l = 0; 
+    int max_len = 0; 
+  
+    // i decides current ending point 
+    for (int i = 0; i < n; i++) { 
+        if (a[i] == 0) 
+            cnt0++; 
+  
+        // If there are more 0's move 
+        // left point for current ending 
+        // point. 
+        while (cnt0 > k) { 
+            if (a[l] == 0) 
+                cnt0--; 
+            l++; 
+        } 
+  
+        max_len = max(max_len, i - l + 1); 
+    } 
+  
+    return max_len; 
+} 
+  
+// Driver code 
+int main() 
+{ 
+    int a[] = { 1, 0, 0, 1, 0, 1, 0, 1 }; 
+    int k = 2; 
+    int n = sizeof(a) / sizeof(a[0]); 
+    cout << longestSubSeg(a, n, k); 
+    return 0; 
+}
+
+Question 6
+
+vector<string> printVertically(string text) {
+        vector<string> res;
+        stringstream ss(text);
+        string str;
+        while(ss>>str){
+            for(int i=res.size(); i<str.length(); i++)
+                res.push_back(res.size() ? string(res[0].length(), ' ') : "");
+            
+            for(int i=0; i<res.size(); i++)
+                res[i].push_back(i>=str.length()?' ':str[i]);
+        }
+        for(auto& s : res)
+            while(s.back()==' ') 
+                s.pop_back();
+        
+        return res;
+    }
+
+Question 7
+
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        vector<vector<int>> dp(word1.size() + 1, vector<int>(word2.size() + 1));
+        
+        for (int i = 0; i <= word1.size(); i++)
+            dp[i][0] = i;
+        
+        for (int i = 0; i <= word2.size(); i++)
+            dp[0][i] = i;
+        
+        for (int i = 1; i <= word1.size(); i++) {
+            for (int j = 1; j <= word2.size(); j++) {
+                if (word1[i-1] == word2[j-1]) {
+                    dp[i][j] = dp[i-1][j-1];
+                } else {
+                    dp[i][j] = min(dp[i-1][j-1], min(dp[i][j-1], dp[i-1][j])) + 1;
+                }
+            }
+        }
+        
+        return dp[word1.size()][word2.size()];
+    }
+};

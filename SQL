@@ -1,0 +1,14 @@
+Question 1
+
+given the sample data provided, the result of this query will be an empty set. 
+The reason for this is as follows: If the set being evaluated by the SQL NOT IN condition contains any values that are null,
+then the outer query here will return an empty set, even if there are many runner ids that match winner_ids in the races table.
+
+SELECT * FROM runners WHERE id NOT IN (SELECT winner_id FROM races WHERE winner_id IS NOT null)
+
+Question 2
+
+Although there are 4 customers not referred by Jane Smith (including Jane Smith herself), the query will only return one: Pat Richards. All the customers who were referred by nobody at all (and therefore have NULL in their ReferredBy column) don’t show up. But certainly those customers weren’t referred by Jane Smith, and certainly NULL is not equal to 2, so why didn’t they show up?
+SQL Server uses three-valued logic, which can be troublesome for programmers accustomed to the more satisfying two-valued logic (TRUE or FALSE) most programming languages use. In most languages, if you were presented with two predicates: ReferredBy = 2 and ReferredBy <> 2, you would expect one of them to be true and one of them to be false, given the same value of ReferredBy. In SQL Server, however, if ReferredBy is NULL, neither of them are true and neither of them are false. Anything compared to NULL evaluates to the third value in three-valued logic: UNKNOWN.
+
+SELECT Name FROM Customers WHERE ReferredBy IS NULL OR ReferredBy <> 2
